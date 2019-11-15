@@ -1,1 +1,2 @@
-/etc/default/hamlib-utils
+ROT_OPTS="-m 603 -s 9600 -r /dev/ttyAMA0 -C timeout=400 -vvv"
+RIG_OPTS=""

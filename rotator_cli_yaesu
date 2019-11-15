@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+rotctl -m 603 -s 9600 -r /dev/ttyAMA0 -C timeout=400 -vvvvv
+

@@ -1,0 +1,14 @@
+#/usr/bin/env bash
+# based off https://unix.stackexchange.com/a/266776
+# run on boot
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+IF=wlan0
+PORT_FROM=554
+PORT_TO=554
+DEST=192.168.1.88
+iptables -t nat -A PREROUTING -i $IF -p tcp --dport $PORT_FROM -j DNAT --to $DEST:$PORT_TO
+iptables -t nat -A POSTROUTING -p tcp -d $DEST --dport $PORT_TO -j MASQUERADE
+
+

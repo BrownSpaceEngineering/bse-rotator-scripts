@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# helper script to run predict sat tracker for BSE groundstation
+
+ROTATOR_PORT=/dev/ttyAMA0
+SERVER_PORT=1210
+
+satellite=EQUISAT
+if [ -n "$1" ]; then
+	satellite=$1
+fi
+
+
+
+# grab the newest TLE
+wget www.celestrak.com/NORAD/elements/cubesat.txt -O cubesat.tle --no-verbose
+
+# filter out only the satellite we want (take name +2 lines) for predict to run
+cat cubesat.tle | grep -A 2 -i $satellite > /tmp/tracked-cubesat.tle
+
+echo
+echo "Starting predict with TLEs for $satellite; hit 'T' key on entry"
+sleep 2
+
+args="-t /tmp/tracked-cubesat.tle -a $ROTATOR_PORT"
+
+# use CLI arg for foreground/bg
+if [ "$2" = "bg" ]; then
+	predict $args -s -n $SERVER_PORT < /dev/null > /dev/null &
+	disown
+	echo "Started predict server at port $SERVER_PORT"
+else
+	predict $args
+fi
+
+

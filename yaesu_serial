@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo "Use ctrl-a then k to exit"
+sleep 5
+screen /dev/ttyAMA0 9600
